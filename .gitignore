@@ -1,0 +1,89 @@
+# Environment Configuration
+.env
+.env.local
+.env.*.local
+
+# Docker
+docker-compose.override.yml
+.dockerignore
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+*.iml
+.classpath
+.project
+.settings
+
+# Build artifacts
+target/
+build/
+dist/
+*.jar
+*.war
+*.ear
+
+# Dependencies
+node_modules/
+.npm
+.gradle
+
+# Logs
+logs/
+*.log
+*.log.*
+logs.txt
+temp_logs.txt
+
+# Database
+*.sql.backup
+*.dump
+postgres_data/
+pgdata/
+
+# Temporary files
+temp/
+tmp/
+*.tmp
+*.bak
+
+# Java
+*.class
+*.jar
+*.war
+*.ear
+.gradle/
+.gradle
+!gradle-wrapper.jar
+!gradle-wrapper.properties
+
+# TestNG
+test-output/
+.testcontainers.properties
+
+# Compiled Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# IDE-specific files
+.classpath
+.project
+.c9/
+*.sage.json
+.metals/
+
+# OS
+Thumbs.db
+.DS_Store
+
+# Custom
+.mvn/wrapper/maven-wrapper.jar
+
+# Docker volumes (local data)
+postgres_data/
+backend_logs/

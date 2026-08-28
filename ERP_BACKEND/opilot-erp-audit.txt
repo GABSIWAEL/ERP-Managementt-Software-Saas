@@ -1,0 +1,121 @@
+You are an expert Java Spring Boot architect, QA engineer, and ERP consultant. You are given access to a full ERP system project with the following "Full Universe" requirements:
+
+Modules & Features:
+
+1. Holidays & Official Free Days
+   - National holidays
+   - Company shutdown days
+   - Automatic leave blocking on holidays
+   - Calendar view
+   - Notifications
+   - Carry-forward rules for holidays on weekends
+
+2. Remote Work
+   - Request & approve work-from-home
+   - Manager-assigned recurring remote days
+   - Monthly quota enforcement
+   - Integration with attendance and reports
+
+3. Leave Management
+   - Annual leave, emergency leave
+   - Leave balance calculation
+   - Exclude holidays & weekends
+   - Overlap detection
+   - Modification, cancellation, HR override
+   - Full audit logging
+
+4. Attendance
+   - Clock in/out
+   - Office vs remote
+   - Late arrivals, early departures, overtime
+   - Auto alerts for missed clock-ins
+   - Auto absent marking
+   - Reporting
+
+5. Payroll & Accounting Parameters
+   - Base salary, overtime, bonuses, deductions
+   - Remote allowance
+   - Tax & insurance
+   - Payslip generation
+   - Expense tracking
+   - Audit of parameter changes
+
+6. Performance Reviews
+   - Quarterly evaluations (technical, teamwork, productivity, discipline)
+   - Low performance triggers HR alerts
+   - History storage
+
+7. Warnings & Discipline
+   - Track lateness, absences, policy violations
+   - Auto-escalation after thresholds
+   - Audit logging
+
+8. Asset Management
+   - Assign/return workflow
+   - Clearance checks on employee exit
+   - Integration with termination process
+
+9. Recruitment
+   - Candidate tracking (applied, interviewed, test, accepted/rejected)
+   - Auto-convert accepted candidate to employee
+   - Onboarding workflow
+
+10. Birthdays & Events
+    - Detect upcoming birthdays
+    - Organize celebrations
+    - Company-wide events with RSVP
+    - Notifications & calendar updates
+
+11. Resignation & Exit Workflows
+    - Manager & HR approval
+    - Asset return
+    - Leave balance settlement
+    - Final payroll
+    - Account deactivation
+    - Data archival
+
+12. Executive Analytics
+    - Attendance heatmaps
+    - Remote vs office ratio
+    - Leave trends
+    - Overtime cost
+    - Salary distribution
+    - Performance trends
+    - Warning statistics
+    - Expense breakdown
+    - Branch-level reporting
+
+13. Multi-Branch Support
+    - Branch-specific managers & reporting
+    - Consolidated company overview
+
+14. Security & Audit
+    - Logs all critical actions
+    - Weekly backup & restore
+    - Role-based access control
+
+Your tasks:
+
+1. Scan the entire project for **implementation completeness**.
+2. For each module/feature, report:
+   - ✅ Exists & fully functional
+   - ⚠ Partially implemented
+   - ❌ Missing entirely
+3. Verify integration:
+   - Leave calculation accounts for holidays
+   - Remote work integration with attendance
+   - Payroll uses attendance, leave, remote, accounting parameters
+   - Warnings escalate automatically based on thresholds
+   - Assets block termination until returned
+4. Verify audit logging for all critical operations.
+5. Identify missing or inconsistent features compared to the "Full Universe" specification.
+6. Generate a **structured report**:
+   - Module name
+   - Feature
+   - Status (Exists / Partial / Missing)
+   - Comments & recommended fixes
+7. Suggest missing unit & integration tests for each module.
+
+Your output should be a **comprehensive ERP feature audit** report that confirms the presence and correctness of every feature in the project. 
+
+Treat this as a full **ERP system readiness & completeness check** for production deployment.

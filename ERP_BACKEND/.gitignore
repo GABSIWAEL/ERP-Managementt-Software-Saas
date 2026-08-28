@@ -1,0 +1,47 @@
+# IDE
+.idea/
+.vscode/
+*.iml
+*.iws
+*.ipr
+
+# Build
+target/
+!.mvn/wrapper/maven-wrapper.jar
+.m2/
+
+# Logs
+logs/
+*.log
+log
+
+# OS
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+
+# Project
+.classpath
+.project
+.settings/
+.gradle/
+build/
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Node (if any)
+node_modules/
+npm-debug.log
+
+# Backup
+*.bak
+*.tmp
+
+# Spring Boot
+bin/
+out/

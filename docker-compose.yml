@@ -1,0 +1,122 @@
+services:
+  # PostgreSQL Database Service
+  postgres:
+    image: postgres:15-alpine
+    container_name: technova-postgres
+    environment:
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      POSTGRES_USER: ${POSTGRES_USER:-erp_user}
+      POSTGRES_DB: ${POSTGRES_DB:-erp_system}
+      POSTGRES_INITDB_ARGS: "--encoding=UTF8 --locale=en_US.UTF-8"
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      # Persistent volume for PostgreSQL data
+      - postgres_data:/var/lib/postgresql/data
+      # Mount initialization scripts
+      - ./init-db:/docker-entrypoint-initdb.d
+    networks:
+      - erp_network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-erp_user} -d ${POSTGRES_DB:-erp_system}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  # Spring Boot ERP Backend Service
+  erp-backend:
+    build:
+      context: ./ERP_BACKEND
+      dockerfile: Dockerfile
+    container_name: technova-erp-backend
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/erp_system
+      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER:-erp_user}
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD:-erp_password_secure_change_in_prod}
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_PROFILES_ACTIVE: docker
+      JAVA_OPTS: "-Xmx512m -Xms256m -XX:+UseG1GC"
+      TZ: UTC
+      SPRING_MAIL_HOST: smtp.gmail.com
+      SPRING_MAIL_PORT: 587
+      SPRING_MAIL_USERNAME: ${MAIL_USERNAME:-your-email@gmail.com}
+      SPRING_MAIL_PASSWORD: ${MAIL_PASSWORD:-your-app-password}
+      SPRING_MAIL_FROM: ${MAIL_FROM:-noreply@company-erp.com}
+      SPRING_MAIL_PROPERTIES_MAIL_SMTP_AUTH: "true"
+      SPRING_MAIL_PROPERTIES_MAIL_SMTP_STARTTLS_ENABLE: "true"
+      SPRING_MAIL_PROPERTIES_MAIL_SMTP_STARTTLS_REQUIRED: "true"
+      SPRING_MAIL_PROPERTIES_MAIL_SMTP_CONNECTIONTIMEOUT: "30000"
+      SPRING_MAIL_PROPERTIES_MAIL_SMTP_TIMEOUT: "30000"
+      SPRING_MAIL_PROPERTIES_MAIL_SMTP_WRITETIMEOUT: "30000"
+    ports:
+      - "${BACKEND_PORT:-8080}:8080"
+    volumes:
+      # Persistent volume for logs
+      - backend_logs:/app/logs
+    networks:
+      - erp_network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  # React Frontend Service
+  erp-frontend:
+    build:
+      context: ./ERP_FRONTEND
+      dockerfile: Dockerfile
+    container_name: technova-erp-frontend
+    depends_on:
+      erp-backend:
+        condition: service_healthy
+    environment:
+      TZ: UTC
+      VITE_API_BASE_URL: http://erp-backend:8080
+    ports:
+      - "${FRONTEND_PORT:-3000}:3000"
+    volumes:
+      # Persistent volume for logs
+      - frontend_logs:/var/log/nginx
+    networks:
+      - erp_network
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3000/health"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+volumes:
+  postgres_data:
+    driver: local
+  backend_logs:
+    driver: local
+  frontend_logs:
+    driver: local
+
+networks:
+  erp_network:
+    driver: bridge
